@@ -66,6 +66,8 @@ function! whiteboard#DoRepl()
   
   execute '0read !node ' . l:inputFilePath
 
+  normal! Gdd
+
   call whiteboard#GotoInputBuffer()
 endfunction
 
