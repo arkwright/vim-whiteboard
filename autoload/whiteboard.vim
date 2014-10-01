@@ -40,6 +40,8 @@ function! whiteboard#CreateBuffers(type)
   silent! execute 'file [Whiteboard Output ' . l:inputBufferNumber . ']'
 
   let b:whiteboardSourceBufferNumber = l:whiteboardSourceBufferNumber
+
+  call whiteboard#GotoInputBuffer()
 endfunction
 
 """
