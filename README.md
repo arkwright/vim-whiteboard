@@ -36,9 +36,8 @@ Buffer.
 
 The Input Buffer is saved in your system's `/tmp` directory. Write whatever
 code you like within the Input Buffer and press `<CR>` to save the buffer and
-pipe its contents to the appropriate script interpreter. In the case of
-JavaScript, the `node` executable is used. After executing, the script's output
-is displayed in the Output Buffer.
+pipe its contents to the appropriate script interpreter. After executing, the
+script's output is displayed in the Output Buffer.
 
 Execute the `:Whiteboard` command again to close all split windows and return
 to the layout with which you began!
@@ -46,7 +45,7 @@ to the layout with which you began!
 `:Whiteboard [interpreter]` can be used to invoke a Whiteboard with a specific
 interpreter. For example, call `:Whiteboard javascript` to open a JavaScript
 interpreter. `[interpreter]` can be any of: the interpreter's nickname, its
-Vim `filetype`, or its file extension (e.g. `.js`).
+Vim `filetype`, or its file extension (e.g. `js`).
 
 The following interpreters are supported out-of-the-box, assuming you have the
 appropriate {command} installed on your system:
