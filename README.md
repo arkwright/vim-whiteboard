@@ -45,7 +45,7 @@ to the layout with which you began!
 
 `:Whiteboard [interpreter]` can be used to invoke a Whiteboard with a specific
 interpreter. For example, call `:Whiteboard javascript` to open a JavaScript
-interpreter. `[interpreter]` can be any of: the interpreter's nickname, it's
+interpreter. `[interpreter]` can be any of: the interpreter's nickname, its
 Vim `filetype`, or its file extension (e.g. `.js`).
 
 The following interpreters are supported out-of-the-box, assuming you have the
@@ -104,7 +104,7 @@ Uses [Semantic Versioning](http://semver.org/).
 * Add four default interpreter configurations for JavaScript, Python, PHP, and
   Ruby.
 * Add ability to customize interpreter configuration.
-* Add ability to invoke specific interpreters via `:Whiteboard` command.
+* Add ability to invoke specific interpreters via `:Whiteboard [interpreter]` command.
 * Add user configuration options for default interpreter, and buffer width.
 
 **0.1.0** (2014-09-30)
