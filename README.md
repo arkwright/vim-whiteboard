@@ -44,8 +44,8 @@ to the layout with which you began!
 
 `:Whiteboard [interpreter]` can be used to invoke a Whiteboard with a specific
 interpreter. For example, call `:Whiteboard javascript` to open a JavaScript
-interpreter. `[interpreter]` can be any of: the interpreter's nickname, its
-Vim `filetype`, or its file extension (e.g. `js`).
+interpreter. `[interpreter]` can be either the interpreter's nickname, or its
+file extension (e.g. `js`).
 
 The following interpreters are supported out-of-the-box, assuming you have the
 appropriate {command} installed on your system:
@@ -74,15 +74,14 @@ You can change the default width of the Whiteboard buffers.
 You can add your own custom interpreters by creating a dictionary of
 dictionaries. These will be merged with the default interpreter configurations,
 with _your settings taking precedence_. The first-level keys are interpreter
-nicknames. All of the second-level keys are _required_. `filetype` is used to
-set the Vim filetype for the Input Buffer. `extension` is the file extension
-associated with this type of interpreter (e.g. `js` for a JavaScript
+nicknames. All of the second-level keys are _required_. `extension` is the file
+extension associated with this type of interpreter (e.g. `js` for a JavaScript
 interpreter). `command` is the shell command to execute; the Input Buffer
 contents will be saved as a file whose the path will be appended to `command`
 and executed as a shell command to interpret the script.
 
     :let g:whiteboard_interpreters = {}
-    :let g:whiteboard_interpreters.javascript = { 'filetype': 'javascript', 'extension': 'js', 'command': 'node' }
+    :let g:whiteboard_interpreters.javascript = { 'extension': 'js', 'command': 'node' }
 
 ## Bugs
 

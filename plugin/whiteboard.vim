@@ -6,7 +6,7 @@
 " let g:whiteboard_command_name = 'Whiteboard'
 "
 " let g:whiteboard_interpreters = {}
-" let g:whiteboard_interpreters.javascript = { 'filetype': 'javascript', 'extension': 'js', 'command': 'node' }
+" let g:whiteboard_interpreters.javascript = { 'extension': 'js', 'command': 'node' }
 """
 
 if exists('g:whiteboard_default_interpreter') ==# 0   ||   g:whiteboard_default_interpreter ==# ''

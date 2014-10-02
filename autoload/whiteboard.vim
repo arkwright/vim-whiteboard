@@ -8,10 +8,10 @@ endif
 if type(g:whiteboard_interpreters) ==# type({})
   let s:interpreters = {}
 
-  let s:interpreters.javascript = { 'filetype': 'javascript', 'extension': 'js',  'command': 'node'   }
-  let s:interpreters.php        = { 'filetype': 'php',        'extension': 'php', 'command': 'php'    }
-  let s:interpreters.python     = { 'filetype': 'python',     'extension': 'py',  'command': 'python' }
-  let s:interpreters.ruby       = { 'filetype': 'ruby',       'extension': 'rb',  'command': 'ruby'   }
+  let s:interpreters.javascript = { 'extension': 'js',  'command': 'node'   }
+  let s:interpreters.php        = { 'extension': 'php', 'command': 'php'    }
+  let s:interpreters.python     = { 'extension': 'py',  'command': 'python' }
+  let s:interpreters.ruby       = { 'extension': 'rb',  'command': 'ruby'   }
 
   " Merge default interpreters into user's custom interpreters.
   " User's interpreters are preferred.
@@ -48,9 +48,7 @@ function! whiteboard#CreateBuffers()
   let l:inputBufferNumber = bufnr('%')
   let b:whiteboardSourceBufferNumber = l:whiteboardSourceBufferNumber
 
-  execute 'file /tmp/whiteboard-' . l:inputBufferNumber . '.' . t:whiteboard_interpreter.extension
-  let &filetype = t:whiteboard_interpreter.filetype
-  write!
+  execute 'write! /tmp/whiteboard-' . l:inputBufferNumber . '.' . t:whiteboard_interpreter.extension
 
   call whiteboard#CreateInputBufferMappings()
 
@@ -106,15 +104,6 @@ function! whiteboard#FindInterpreter(type)
     return g:whiteboard_interpreters[a:type]
   endif
 
-  " Next preference is selecting interpreter by file type.
-  for nickname in keys(g:whiteboard_interpreters)
-    if exists('g:whiteboard_interpreters.' . nickname . '.filetype') ==# 1
-      if g:whiteboard_interpreters[nickname].filetype ==# a:type
-        return g:whiteboard_interpreters[nickname]
-      endif
-    endif
-  endfor
-
   " Next preference is selecting interpreter by file extension.
   for nickname in keys(g:whiteboard_interpreters)
     if exists('g:whiteboard_interpreters.' . nickname . '.extension') ==# 1
@@ -167,8 +156,8 @@ endfunction
 " REPL type.
 "
 " @param    string    a:1    The REPL interpreter to use, e.g., 'javascript'.
-"                            Can be either the interpreter's nickname, a Vim
-"                            filetype, or the file extension associated with the
+"                            Can be either the interpreter's nickname, or
+"                            the file extension associated with the
 "                            interpreter.
 """
 function! whiteboard#Whiteboard(...)
