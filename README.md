@@ -43,11 +43,47 @@ is displayed in the Output Buffer.
 Execute the `:Whiteboard` command again to close all split windows and return
 to the layout with which you began!
 
+`:Whiteboard [interpreter]` can be used to invoke a Whiteboard with a specific
+interpreter. For example, call `:Whiteboard javascript` to open a JavaScript
+interpreter. `[interpreter]` can be any of: the interpreter's nickname, it's
+Vim `filetype`, or its file extension (e.g. `.js`).
+
+The following interpreters are supported out-of-the-box, assuming you have the
+appropriate {command} installed on your system:
+
+* JavaScript {node} via `javascript` or `js`.
+* Python {python} via `python` or `py`.
+* Ruby {ruby} via `ruby` or `rb`.
+* PHP {php} via `php`.
+
 ## Configuration
 
-You can change the name of the invocation command like so:
+Stick any of the following in your `.vimrc`. Default values are listed below.
 
-    :let g:whiteboard_command_name = 'Repl'
+You can change the name of the invocation command.
+
+    :let g:whiteboard_command_name = 'Whiteboard'
+
+You can set a default interpreter.
+
+    :let g:whiteboard_default_interpreter = 'javascript'
+
+You can change the default width of the Whiteboard buffers.
+
+    :let g:whiteboard_buffer_width = 80
+
+You can add your own custom interpreters by creating a dictionary of
+dictionaries. These will be merged with the default interpreter configurations,
+with _your settings taking precedence_. The first-level keys are interpreter
+nicknames. All of the second-level keys are _required_. `filetype` is used to
+set the Vim filetype for the Input Buffer. `extension` is the file extension
+associated with this type of interpreter (e.g. `js` for a JavaScript
+interpreter). `command` is the shell command to execute; the Input Buffer
+contents will be saved as a file whose the path will be appended to `command`
+and executed as a shell command to interpret the script.
+
+    :let g:whiteboard_interpreters = {}
+    :let g:whiteboard_interpreters.javascript = { 'filetype': 'javascript', 'extension': 'js', 'command': 'node' }
 
 ## Bugs
 
@@ -62,6 +98,14 @@ Pull requests, feature requests, ideas, bug reports, etc., are all welcome.
 ## Changelog
 
 Uses [Semantic Versioning](http://semver.org/).
+
+**0.2.0** (2014-10-1)
+
+* Add four default interpreter configurations for JavaScript, Python, PHP, and
+  Ruby.
+* Add ability to customize interpreter configuration.
+* Add ability to invoke specific interpreters via `:Whiteboard` command.
+* Add user configuration options for default interpreter, and buffer width.
 
 **0.1.0** (2014-09-30)
 

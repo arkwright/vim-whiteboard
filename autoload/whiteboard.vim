@@ -1,7 +1,33 @@
 """
+" Initialization
+"""
+if exists('g:whiteboard_interpreters') ==# 0
+  let g:whiteboard_interpreters = {}
+endif
+
+if type(g:whiteboard_interpreters) ==# type({})
+  let s:interpreters = {}
+
+  let s:interpreters.javascript = { 'filetype': 'javascript', 'extension': 'js',  'command': 'node'   }
+  let s:interpreters.php        = { 'filetype': 'php',        'extension': 'php', 'command': 'php'    }
+  let s:interpreters.python     = { 'filetype': 'python',     'extension': 'py',  'command': 'python' }
+  let s:interpreters.ruby       = { 'filetype': 'ruby',       'extension': 'rb',  'command': 'ruby'   }
+
+  " Merge default interpreters into user's custom interpreters.
+  " User's interpreters are preferred.
+  for key in keys(s:interpreters)
+    if has_key(g:whiteboard_interpreters, key) ==# 0
+      let g:whiteboard_interpreters[key] = s:interpreters[key]
+    endif
+  endfor
+endif
+
+"""
 " Closes Whiteboard and returns to the starting buffer.
 """
 function! whiteboard#Close()
+  unlet t:whiteboard_interpreter
+
   if exists('b:whiteboardSourceBufferNumber') !=# 0
     execute 'buffer! ' . b:whiteboardSourceBufferNumber
     only
@@ -12,22 +38,18 @@ endfunction
 
 """
 " Creates the necessary buffers.
-"
-" @param    string    a:type    The REPL type to use, e.g., 'javascript'.
 """
-function! whiteboard#CreateBuffers(type)
-  let l:bufferWidth = 80
-
+function! whiteboard#CreateBuffers()
   let l:whiteboardSourceBufferNumber = bufnr('%')
   let b:whiteboardSourceBufferNumber = l:whiteboardSourceBufferNumber
 
-  execute 'botright ' . l:bufferWidth . 'vnew'
+  execute 'botright ' . g:whiteboard_buffer_width . 'vnew'
 
   let l:inputBufferNumber = bufnr('%')
   let b:whiteboardSourceBufferNumber = l:whiteboardSourceBufferNumber
 
-  execute 'file /tmp/whiteboard-' . l:inputBufferNumber . '.js'
-  set filetype=javascript
+  execute 'file /tmp/whiteboard-' . l:inputBufferNumber . '.' . t:whiteboard_interpreter.extension
+  let &filetype = t:whiteboard_interpreter.filetype
   write!
 
   call whiteboard#CreateInputBufferMappings()
@@ -58,17 +80,52 @@ function! whiteboard#DoRepl()
   update!
 
   let l:inputFilePath = expand('%')
-  let l:inputFileType = &filetype
 
   call whiteboard#GotoOutputBuffer()
 
   %delete
   
-  execute '0read !node ' . l:inputFilePath
+  execute '0read !' . t:whiteboard_interpreter.command . ' ' . l:inputFilePath
 
   normal! Gdd
 
   call whiteboard#GotoInputBuffer()
+endfunction
+
+"""
+" Finds an interpreter associated with the specified string.
+"
+" @param    string        a:type  The type of interpreter to find,
+"                                 e.g. 'javascript'.
+"
+" @return   dictionary            The interpreter configuration data.
+"""
+function! whiteboard#FindInterpreter(type)
+  " Prefer selecting interpreter by nickname.
+  if exists('g:whiteboard_interpreters.' . a:type) ==# 1
+    return g:whiteboard_interpreters[a:type]
+  endif
+
+  " Next preference is selecting interpreter by file type.
+  for nickname in keys(g:whiteboard_interpreters)
+    if exists('g:whiteboard_interpreters.' . nickname . '.filetype') ==# 1
+      if g:whiteboard_interpreters[nickname].filetype ==# a:type
+        return g:whiteboard_interpreters[nickname]
+      endif
+    endif
+  endfor
+
+  " Next preference is selecting interpreter by file extension.
+  for nickname in keys(g:whiteboard_interpreters)
+    if exists('g:whiteboard_interpreters.' . nickname . '.extension') ==# 1
+      if g:whiteboard_interpreters[nickname].extension ==# a:type
+        return g:whiteboard_interpreters[nickname]
+      endif
+    endif
+  endfor
+
+  " No interpreter was found!
+  return 0
 endfunction
 
 """
@@ -102,12 +159,17 @@ function! s:IsWhiteboardActive()
   return 0
 endfunction
 
+"""
 " The main Whiteboard invocation function.
 "
-" If called with a string argument, invokes Manhunt using the specified REPL type.
-" If called without an argument, toggles Whiteboard using the default REPL type.
+" If called with a string argument, invokes Manhunt using the specified REPL
+" type. If called without an argument, toggles Whiteboard using the default
+" REPL type.
 "
-" @param    string    a:type    The REPL type to use, e.g., 'javascript'.
+" @param    string    a:1    The REPL interpreter to use, e.g., 'javascript'.
+"                            Can be either the interpreter's nickname, a Vim
+"                            filetype, or the file extension associated with the
+"                            interpreter.
 """
 function! whiteboard#Whiteboard(...)
   " Toggle Whiteboard off if it is already on.
@@ -116,11 +178,20 @@ function! whiteboard#Whiteboard(...)
     return
   endif
 
-  let l:type = 'javascript'
+  let l:type = g:whiteboard_default_interpreter
 
   if a:0 >=# 1
     let l:type = a:1
   endif
 
-  call whiteboard#CreateBuffers(l:type)
+  let l:interpreter = whiteboard#FindInterpreter(l:type)
+
+  if type(l:interpreter) ==# type({})
+    let t:whiteboard_interpreter = l:interpreter
+  else
+    echoe 'Whiteboard could not find interpreter for "' . l:type . '".'
+    return
+  endif
+
+  call whiteboard#CreateBuffers()
 endfunction
