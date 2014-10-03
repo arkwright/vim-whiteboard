@@ -22,5 +22,5 @@ if exists('g:whiteboard_command_name') ==# 0   ||   g:whiteboard_command_name ==
 endif
 
 if exists(':' . g:whiteboard_command_name) ==# 0
-  execute 'command! -nargs=* ' . g:whiteboard_command_name . ' call whiteboard#Whiteboard(<f-args>)'
+  execute 'command! -bang -nargs=* ' . g:whiteboard_command_name . ' call whiteboard#Whiteboard("<bang>", <f-args>)'
 endif

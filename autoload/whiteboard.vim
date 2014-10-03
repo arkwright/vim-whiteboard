@@ -26,40 +26,55 @@ endif
 " Closes Whiteboard and returns to the starting buffer.
 """
 function! whiteboard#Close()
-  unlet t:whiteboard_interpreter
-
-  if exists('b:whiteboardSourceBufferNumber') !=# 0
-    execute 'buffer! ' . b:whiteboardSourceBufferNumber
+  try
+    call whiteboard#GotoInputBuffer()
+    call whiteboard#DeleteInputBufferMappings()
+    call whiteboard#GotoSourceBuffer()
     only
-  else
+  catch
     echoe 'Cannot close Whiteboard. Please close windows manually.'
-  endif
+  endtry
+
+  unlet t:whiteboardInterpreter
+  unlet t:whiteboardSourceBufferNumber
+  unlet t:whiteboardInputBufferNumber
+  unlet t:whiteboardOutputBufferNumber
 endfunction
 
 """
-" Creates the necessary buffers.
+" Creates and arranges the necessary buffers.
+"
+" @param    number    a:currentIsInput    1 if the current buffer should be used as
+"                                         the Input Buffer, 0 otherwise.
 """
-function! whiteboard#CreateBuffers()
-  let l:whiteboardSourceBufferNumber = bufnr('%')
-  let b:whiteboardSourceBufferNumber = l:whiteboardSourceBufferNumber
+function! whiteboard#CreateBuffers(currentIsInput)
+  let t:whiteboardSourceBufferNumber = bufnr('%')
 
-  execute 'botright ' . g:whiteboard_buffer_width . 'vnew'
+  if a:currentIsInput ==# 0
+    execute 'botright ' . g:whiteboard_buffer_width . 'vnew'
+  endif
 
-  let l:inputBufferNumber = bufnr('%')
-  let b:whiteboardSourceBufferNumber = l:whiteboardSourceBufferNumber
+  let t:whiteboardInputBufferNumber = bufnr('%')
 
-  execute 'write! /tmp/whiteboard-' . l:inputBufferNumber . '.' . t:whiteboard_interpreter.extension
+  if expand('%') ==# ''
+    execute 'write! /tmp/whiteboard-' . t:whiteboardInputBufferNumber . '.' . t:whiteboardInterpreter.extension
+  endif
 
   call whiteboard#CreateInputBufferMappings()
 
-  new
+  if a:currentIsInput ==# 0
+    new
+  else
+    vnew
+  endif
+
+  let t:whiteboardOutputBufferNumber = bufnr('%')
+
   setlocal buftype=nofile
   setlocal bufhidden=delete
   setlocal noswapfile
 
-  silent! execute 'file [Whiteboard Output ' . l:inputBufferNumber . ']'
-
-  let b:whiteboardSourceBufferNumber = l:whiteboardSourceBufferNumber
+  silent! execute 'file [Whiteboard Output ' . t:whiteboardInputBufferNumber . ']'
 
   call whiteboard#GotoInputBuffer()
 endfunction
@@ -69,6 +84,13 @@ endfunction
 """
 function! whiteboard#CreateInputBufferMappings()
   nnoremap <buffer> <CR> :silent call whiteboard#DoRepl()<CR>
+endfunction
+
+"""
+" Deletes convenience mappings within the input buffer.
+"""
+function! whiteboard#DeleteInputBufferMappings()
+  nunmap <buffer> <CR>
 endfunction
 
 """
@@ -83,7 +105,7 @@ function! whiteboard#DoRepl()
 
   %delete
   
-  execute '0read !' . t:whiteboard_interpreter.command . ' ' . l:inputFilePath
+  execute '0read !' . t:whiteboardInterpreter.command . ' ' . l:inputFilePath
 
   normal! Gdd
 
@@ -121,14 +143,32 @@ endfunction
 " Moves the cursor to the input buffer.
 """
 function! whiteboard#GotoInputBuffer()
-  execute '3wincmd w'
+  call whiteboard#GotoWindowForBuffer(t:whiteboardInputBufferNumber)
 endfunction
 
 """
 " Moves the cursor to the output buffer.
 """
 function! whiteboard#GotoOutputBuffer()
-  execute '2wincmd w'
+  call whiteboard#GotoWindowForBuffer(t:whiteboardOutputBufferNumber)
+endfunction
+
+"""
+" Moves the cursor to the source buffer.
+"""
+function! whiteboard#GotoSourceBuffer()
+  call whiteboard#GotoWindowForBuffer(t:whiteboardSourceBufferNumber)
+endfunction
+
+"""
+" Moves the cursor to the input buffer.
+"
+" @param    number    a:buffer    The buffer number whose window should be
+"                                 located within the current tab pane,
+"                                 and focused within.
+"""
+function! whiteboard#GotoWindowForBuffer(buffer)
+  execute bufwinnr(a:buffer) . 'wincmd w'
 endfunction
 
 """
@@ -167,20 +207,29 @@ function! whiteboard#Whiteboard(...)
     return
   endif
 
+  let l:bang = a:1 ==# '!' ? 1 : 0
+  let l:extension = expand('%:e')
+
   let l:type = g:whiteboard_default_interpreter
 
-  if a:0 >=# 1
-    let l:type = a:1
+  if l:bang ==# 1   &&   l:extension !=# ''
+    let l:type = l:extension
+  endif
+
+  if a:0 >=# 2
+    if l:bang ==# 0   ||   l:extension ==# ''
+      let l:type = a:2
+    endif
   endif
 
   let l:interpreter = whiteboard#FindInterpreter(l:type)
 
   if type(l:interpreter) ==# type({})
-    let t:whiteboard_interpreter = l:interpreter
+    let t:whiteboardInterpreter = l:interpreter
   else
     echoe 'Whiteboard could not find interpreter for "' . l:type . '".'
     return
   endif
 
-  call whiteboard#CreateBuffers()
+  call whiteboard#CreateBuffers(l:bang)
 endfunction
