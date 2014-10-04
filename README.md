@@ -17,9 +17,12 @@ If you are using [Pathogen](https://github.com/tpope/vim-pathogen):
     cd ~/.vim/bundle
     git clone https://github.com/arkwright/vim-whiteboard.git
 
-Only tested in Vim 7.4 on OS X using MacVim.
+It is *strongly recommended* that you configure the
+`g:whiteboard_temp_directory` option (see _Configuration_ below), othewise
+Whiteboard might throw an error if it cannot write to your system's temp
+directory.
 
-**This plugin is very much a prototype. Your mileage may vary!**
+Tested in Vim 7.4 on OS X and Windows using MacVim/gvim.
 
 ## Usage
 
@@ -29,10 +32,10 @@ The `:Whiteboard` command opens two splits, the Input Buffer and the Output
 Buffer.
 
     +-----------------------------+
-    |                |   Output   |
+    |                |   Input    |
     |    Starting    |   Buffer   |
     |     Buffer     |------------|
-    |                |   Input    |
+    |                |   Output   |
     |                |   Buffer   |
     +-----------------------------+
 
@@ -97,6 +100,16 @@ You can change the default width of the Whiteboard buffers.
 
     :let g:whiteboard_buffer_width = 80
 
+You can change the temporary directory location. This is the directory where
+Whiteboard stores all of the Input Buffer files it creates. Out-of-the-box,
+Whiteboard will attempt to detect your system's tempoary directory. However,
+you will find it much more useful to manually specify where you want these
+temporary files stored. Whiteboard does not delete the temporary files it
+creates so that you may recover any code that you wrote and accidentally
+discarded. *Don't forget to add a trailing slash!*
+
+    :let g:whiteboard_temp_directory = '~/tmp/'
+
 You can add your own custom interpreters by creating a dictionary of
 dictionaries. These will be merged with the default interpreter configurations,
 with _your settings taking precedence_. The first-level keys are interpreter
@@ -127,6 +140,9 @@ Uses [Semantic Versioning](http://semver.org/).
 
 * Add `:Whiteboard!` variant, which uses the current buffer as the Input
   Buffer.
+* Add Windows support.
+* Add option to customize temporary directory location.
+* Force input buffer split location to be left/above.
 
 **0.2.0** (2014-10-1)
 
