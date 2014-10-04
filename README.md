@@ -123,7 +123,7 @@ Pull requests, feature requests, ideas, bug reports, etc., are all welcome.
 
 Uses [Semantic Versioning](http://semver.org/).
 
-**0.2.0** (2014-10-3)
+**0.3.0** (2014-10-3)
 
 * Add `:Whiteboard!` variant, which uses the current buffer as the Input
   Buffer.
