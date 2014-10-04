@@ -23,7 +23,7 @@ Only tested in Vim 7.4 on OS X using MacVim.
 
 ## Usage
 
-### `:Whiteboard`
+### :Whiteboard
 
 The `:Whiteboard` command opens two splits, the Input Buffer and the Output
 Buffer.
@@ -57,7 +57,7 @@ appropriate {command} installed on your system:
 * Ruby {ruby} via `ruby` or `rb`.
 * PHP {php} via `php`.
 
-### `:Whiteboard!`
+### :Whiteboard!
 
 The `:Whiteboard!` command opens a Whiteboard and uses the current buffer as
 the Input Buffer. The appropriate interpreter will automatically be selected
