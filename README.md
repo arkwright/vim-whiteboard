@@ -22,6 +22,11 @@ It is **strongly recommended** that you configure the
 Whiteboard might throw an error if it cannot write to your system's temp
 directory.
 
+Any interpreters that you want to use must be accessible from the terminal. For
+example, to execute JavaScript, you'll need [node](http://nodejs.org/)
+installed. This mostly applies to Windows users. You can change and extend the
+default interpreters if necessary.
+
 Tested in Vim 7.4 on OS X and Windows using MacVim/gvim.
 
 ## Usage
@@ -121,6 +126,26 @@ and executed as a shell command to interpret the script.
 
     :let g:whiteboard_interpreters = {}
     :let g:whiteboard_interpreters.javascript = { 'extension': 'js', 'command': 'node' }
+
+## FAQ
+
+**Why not use [vim-slime](https://github.com/jpalardy/vim-slime) instead?**
+
+You can do that if you like, but I didn't want the overhead of setting up and
+configuring vim-slime and tmux.
+
+I also prefer to use virtual desktops with one application per desktop, which
+means that my terminal is not visible while I am looking at Vim. Whiteboard
+allows me to run some quick code experiments without having to switch virtual
+desktops to see the output.
+
+Whiteboard also has a simplified workflow, which I prefer. You don't need to
+select text in order to execute it; the entire Input Buffer is executed in its
+entirety. Pressing `<CR>` executes your script, which is intuitive.
+
+It must also be noted that Whiteboard is a different project with divergent
+features. For example, it auto-saves all Whiteboards, so you can dig up up old
+experiments if you really need to.
 
 ## Bugs
 
