@@ -101,7 +101,7 @@ You can change the default width of the Whiteboard buffers.
     :let g:whiteboard_buffer_width = 80
 
 You can change the temporary directory location. This is the directory where
-Whiteboard stores all of the Input Buffer files it creates. Out-of-the-box,
+Whiteboard stores all of the Input Buffer files it creates. Out of the box,
 Whiteboard will attempt to detect your system's tempoary directory. However,
 you will find it much more useful to manually specify where you want these
 temporary files stored. Whiteboard does not delete the temporary files it
