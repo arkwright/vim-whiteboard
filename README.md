@@ -52,7 +52,7 @@ interpreter. For example, call `:Whiteboard javascript` to select a JavaScript
 interpreter. `[interpreter]` can be either the interpreter's nickname, or its
 file extension (e.g. `js`).
 
-The following interpreters are supported out-of-the-box, assuming you have the
+The following interpreters are supported out of the box, assuming you have the
 appropriate {command} installed on your system:
 
 * JavaScript {node} via `javascript` or `js`.
