@@ -63,9 +63,9 @@ function! whiteboard#CreateBuffers(currentIsInput)
   call whiteboard#CreateInputBufferMappings()
 
   if a:currentIsInput ==# 0
-    new
+    rightbelow new
   else
-    vnew
+    rightbelow vnew
   endif
 
   let t:whiteboardOutputBufferNumber = bufnr('%')
