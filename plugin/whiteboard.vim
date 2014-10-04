@@ -32,7 +32,7 @@ if exists('g:whiteboard_temp_directory') ==# 0   ||   g:whiteboard_temp_director
   " Windows $TMP and $TEMP returns a directory path without a trailing
   " slash. So we have to check for and add one.
   if match(strpart(s:dir, strlen(s:dir) - 1, 1), '\v[\/\\]') ==# -1
-    s:dir .= '/'
+    let s:dir .= '/'
   endif
 
   let g:whiteboard_temp_directory = s:dir
