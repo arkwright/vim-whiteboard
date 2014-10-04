@@ -23,9 +23,9 @@ Whiteboard might throw an error if it cannot write to your system's temp
 directory.
 
 Any interpreters that you want to use must be accessible from the terminal. For
-example, to execute JavaScript, you'll need [node](http://nodejs.org/)
-installed. This mostly applies to Windows users. You can change and extend the
-default interpreters if necessary.
+example, to execute JavaScript, you'll need [node](http://nodejs.org/). This
+mostly applies to Windows users. You can change and extend the default
+interpreters if necessary.
 
 Tested in Vim 7.4 on OS X and Windows using MacVim/gvim.
 
