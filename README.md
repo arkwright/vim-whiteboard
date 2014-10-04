@@ -5,8 +5,8 @@ A scratch pad for experimenting with scripts within Vim.
 ## Why?
 
 I want the full editing power of Vim while I experiment and iterate with a
-small bit of code. I want all of this to occur inside Vim, for convenience and
-comfort.
+small bit of code. I want the output of my experimental script to be piped
+back into Vim.
 
 ## Installation
 
@@ -22,6 +22,8 @@ Only tested in Vim 7.4 on OS X using MacVim.
 **This plugin is very much a prototype. Your mileage may vary!**
 
 ## Usage
+
+### `:Whiteboard`
 
 The `:Whiteboard` command opens two splits, the Input Buffer and the Output
 Buffer.
@@ -43,7 +45,7 @@ Execute the `:Whiteboard` command again to close all split windows and return
 to the layout with which you began!
 
 `:Whiteboard [interpreter]` can be used to invoke a Whiteboard with a specific
-interpreter. For example, call `:Whiteboard javascript` to open a JavaScript
+interpreter. For example, call `:Whiteboard javascript` to select a JavaScript
 interpreter. `[interpreter]` can be either the interpreter's nickname, or its
 file extension (e.g. `js`).
 
@@ -54,6 +56,30 @@ appropriate {command} installed on your system:
 * Python {python} via `python` or `py`.
 * Ruby {ruby} via `ruby` or `rb`.
 * PHP {php} via `php`.
+
+### `:Whiteboard!`
+
+The `:Whiteboard!` command opens a Whiteboard and uses the current buffer as
+the Input Buffer. The appropriate interpreter will automatically be selected
+based on the starting buffer's file extension. You will end up with two
+vertical splits, like this:
+
+    +---------------------------+
+    |              |            |
+    |   Starting/  |   Output   |
+    |   Input      |   Buffer   |
+    |   Buffer     |            |
+    |              |            |
+    +---------------------------+
+
+Calling `:Whiteboard! [interpreter]` on an unnamed buffer will cause that
+buffer to be saved in your system's `/tmp` directory, with a filetype
+appropriate for the selected interpreter. This enables the following workflow:
+
+    :tabnew
+    :Whiteboard! php
+
+...and now you can start hacking on a simple PHP script!
 
 ## Configuration
 
@@ -96,6 +122,11 @@ Pull requests, feature requests, ideas, bug reports, etc., are all welcome.
 ## Changelog
 
 Uses [Semantic Versioning](http://semver.org/).
+
+**0.2.0** (2014-10-3)
+
+* Add `:Whiteboard!` variant, which uses the current buffer as the Input
+  Buffer.
 
 **0.2.0** (2014-10-1)
 
