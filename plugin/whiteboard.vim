@@ -3,6 +3,7 @@
 "
 " let g:whiteboard_default_interpreter = 'javascript'
 " let g:whiteboard_buffer_width = 80
+" let g:whiteboard_temp_directory = '~/tmp/'
 " let g:whiteboard_command_name = 'Whiteboard'
 "
 " let g:whiteboard_interpreters = {}
@@ -15,6 +16,20 @@ endif
 
 if exists('g:whiteboard_buffer_width') ==# 0
   let g:whiteboard_buffer_width = 80
+endif
+
+if exists('g:whiteboard_temp_directory') ==# 0   ||   g:whiteboard_temp_directory ==# ''
+  let s:dir = '~/tmp/'
+
+  if $TMP !=# ''
+    let s:dir = $TMP
+  elseif $TEMP !=# ''
+    let s:dir = $TEMP
+  elseif $TMPDIR !=# ''
+    let s:dir = $TMPDIR
+  endif
+
+  let g:whiteboard_temp_directory = s:dir
 endif
 
 if exists('g:whiteboard_command_name') ==# 0   ||   g:whiteboard_command_name ==# ''

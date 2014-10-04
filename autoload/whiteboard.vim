@@ -57,7 +57,7 @@ function! whiteboard#CreateBuffers(currentIsInput)
   let t:whiteboardInputBufferNumber = bufnr('%')
 
   if expand('%') ==# ''
-    execute 'write! /tmp/whiteboard-' . t:whiteboardInputBufferNumber . '.' . t:whiteboardInterpreter.extension
+    execute 'write! ' . g:whiteboard_temp_directory . 'whiteboard-' . t:whiteboardInputBufferNumber . '.' . t:whiteboardInterpreter.extension
   endif
 
   call whiteboard#CreateInputBufferMappings()
