@@ -17,7 +17,7 @@ If you are using [Pathogen](https://github.com/tpope/vim-pathogen):
     cd ~/.vim/bundle
     git clone https://github.com/arkwright/vim-whiteboard.git
 
-It is *strongly recommended* that you configure the
+It is **strongly recommended** that you configure the
 `g:whiteboard_temp_directory` option (see _Configuration_ below), othewise
 Whiteboard might throw an error if it cannot write to your system's temp
 directory.
@@ -106,7 +106,7 @@ Whiteboard will attempt to detect your system's tempoary directory. However,
 you will find it much more useful to manually specify where you want these
 temporary files stored. Whiteboard does not delete the temporary files it
 creates so that you may recover any code that you wrote and accidentally
-discarded. *Don't forget to add a trailing slash!*
+discarded. **Don't forget to add a trailing slash!**
 
     :let g:whiteboard_temp_directory = '~/tmp/'
 
