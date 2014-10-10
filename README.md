@@ -161,6 +161,11 @@ Pull requests, feature requests, ideas, bug reports, etc., are all welcome.
 
 Uses [Semantic Versioning](http://semver.org/).
 
+**0.3.1** (2014-10-9)
+
+* Fix `:Whiteboard` command not being created if it is a substring of
+  a longer command name, e.g., `:Whiteboards`.
+
 **0.3.0** (2014-10-3)
 
 * Add `:Whiteboard!` variant, which uses the current buffer as the Input

@@ -42,6 +42,6 @@ if exists('g:whiteboard_command_name') ==# 0   ||   g:whiteboard_command_name ==
   let g:whiteboard_command_name = 'Whiteboard'
 endif
 
-if exists(':' . g:whiteboard_command_name) ==# 0
+if exists(':' . g:whiteboard_command_name) !=# 2
   execute 'command! -bang -nargs=* ' . g:whiteboard_command_name . ' call whiteboard#Whiteboard("<bang>", <f-args>)'
 endif
